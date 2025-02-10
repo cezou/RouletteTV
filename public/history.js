@@ -1,11 +1,11 @@
+// Garder en mémoire les entrées précédentes avec leurs IDs uniques
+let previousEntries = new Set();
+
 async function fetchHistory() {
     try {
         const response = await fetch('/api/get-history');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
-        console.log('Fetched history:', data);
         
         if (data.success && Array.isArray(data.history)) {
             displayHistory(data.history);
@@ -24,12 +24,25 @@ function displayHistory(history) {
         return;
     }
 
-    winnersList.innerHTML = history.map(entry => `
-        <div class="winner-entry">
-            <strong>${entry.username}</strong> won ${entry.prize}
-            <small>${new Date(entry.timestamp).toLocaleString()}</small>
-        </div>
-    `).join('');
+    // Créer un ID unique pour chaque entrée
+    const getEntryId = entry => `${entry.username}-${entry.prize}-${entry.timestamp}`;
+    
+    // Identifier les nouvelles entrées
+    const currentEntries = new Set(history.map(getEntryId));
+    const newEntries = history.filter(entry => !previousEntries.has(getEntryId(entry)));
+
+    // Mettre à jour la liste des entrées précédentes
+    previousEntries = currentEntries;
+
+    winnersList.innerHTML = history.map(entry => {
+        const isNew = newEntries.includes(entry);
+        return `
+            <div class="winner-entry ${isNew ? 'animate-slide' : ''}">
+                <strong>${entry.username}</strong> a remporté: <strong>${entry.prize}</strong>
+                <small>${new Date(entry.timestamp).toLocaleString()}</small>
+            </div>
+        `;
+    }).join('');
 }
 
 // Fetch immediately and refresh every 5 seconds
