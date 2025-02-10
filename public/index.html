@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,11 +8,23 @@
 </head>
 <body>
     <div class="container">
-        <input type="text" id="username" placeholder="Enter your name">
-        <div class="wheel">
-            <!-- Wheel will be rendered here -->
+        <div class="welcome-screen">
+            <h2>Quel est votre nom?</h2>
+            <div class="name-input-container">
+                <input type="text" id="username" placeholder="Entrez votre nom">
+                <button class="submit-arrow">➜</button>
+            </div>
         </div>
-        <button id="spin">SPIN</button>
+        <div class="wheel-container">
+            <div class="pointer"></div>
+            <div class="wheel">
+                <!-- Segments will be added by JavaScript -->
+            </div>
+        </div>
+        <div class="win-popup" id="winPopup">
+            <h2>Félicitations!</h2>
+            <p id="winMessage"></p>
+        </div>
     </div>
     <script src="wheel.js"></script>
 </body>
