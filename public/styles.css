@@ -1,0 +1,40 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #1a1a1a;
+    color: white;
+}
+
+.container {
+    text-align: center;
+}
+
+.wheel {
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin: 20px auto;
+    position: relative;
+}
+
+#username {
+    padding: 10px;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+#spin {
+    padding: 15px 30px;
+    font-size: 20px;
+    cursor: pointer;
+    background: #4CAF50;
+    border: none;
+    color: white;
+    border-radius: 5px;
+}
