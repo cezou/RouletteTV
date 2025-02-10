@@ -1,10 +1,19 @@
+@font-face {
+    font-family: 'CasinoFlat';
+    src: url('../assets/CasinoFlat.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'LovingCaress';
+    src: url('../assets/loving-caress.regular.otf') format('opentype');
+}
 
 body {
     margin: 0;
     padding: 0;
     background: #1a1a1a;
     color: white;
-    font-family: Arial, sans-serif;
+    font-family: 'LovingCaress', Arial, sans-serif;
 }
 
 .history-container {
