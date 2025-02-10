@@ -1,0 +1,32 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #1a1a1a;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.history-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+#winners-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.winner-entry {
+    background: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 5px;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}

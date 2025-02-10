@@ -1,0 +1,9 @@
+{
+	"name": "roulette-tv",
+	"version": "1.0.0",
+	"dependencies": {
+	  "@upstash/redis": "^1.28.3",
+	  "@vercel/kv": "^0.2.4"
+	}
+  }
+  
