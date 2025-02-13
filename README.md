@@ -19,7 +19,7 @@ A casino prize wheel system designed for FiveM Item and TV integration, with rea
 
 - **Redis Database**: Stores all wheel spins and results
 - **Vercel**: Hosts the application and handles serverless functions
-- **AWS**: Manages the FFmpeg streaming pipeline
+- **Oracle Cloud Infastructure**: Manages the FFmpeg streaming pipeline
 - **FiveM Integration**: 
   - Wheel: Direct URL integration in a URL Item (Or via phone if the server can't use URL Items)
   - History: YouTube stream via `/media` command
