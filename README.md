@@ -9,9 +9,10 @@ A casino prize wheel system designed for FiveM Item and TV integration, with rea
 
 ### History Page ([https://roulette-tv.vercel.app/history.html](https://roulette-tv.vercel.app/history.html))
 - Automated streaming setup:
-  1. Page content captured by FFmpeg
-  2. Streamed to YouTube via AWS
-  3. YouTube stream displayed on a FiveM TV using `/media`
+  1. In an Oracle Cloud Instance (It's like an AWS EC2):
+    - Page content captured via puppeteer (it's a non-headless browser)
+    - Streamed to YouTube via FFmpeg
+  2. YouTube stream displayed on a FiveM TV using `/media`
 - Real-time updates every 5 seconds
 
 ## 🛠 Core Components
