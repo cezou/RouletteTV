@@ -1,5 +1,5 @@
 const prizesConfig = [
-    { text: 'Eau des chiottes du casino', weight: 3 },
+    { text: 'Eau des chiottes du casino', weight: 5 },
     { text: '10 000$', weight: 1 },
     { text: 'Pet de Yago en bouteille', weight: 3 },
     { text: 'Seringue utilisée', weight: 3 },
