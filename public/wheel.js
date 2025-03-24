@@ -1,10 +1,10 @@
 const prizesConfig = [
-    { text: 'Eau des chiottes du casino', weight: 5 },
-    { text: '10 000$', weight: 1 },
     { text: 'Pet de Yago en bouteille', weight: 3 },
     { text: 'Seringue utilisée', weight: 3 },
     { text: 'Cheveu de Yago', weight: 3 },
     { text: 'Rhumberto Blanc', weight: 1, special: true }
+    { text: 'Un RomeroDiMery', weight: 2 }
+    { text: 'Un tank', weight: 0 , special: true }
 ];
 
 // Créer un tableau plat basé sur les poids
