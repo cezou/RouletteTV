@@ -32,6 +32,7 @@ export function drawWheel(ctx, wheel) {
  */
 function drawSegments(ctx, wheel, centerX, centerY, outerRadius, middleRadius, innerRadius, totalWeight, effectiveTotal) {
     let currentAngle = wheel.angle;
+    let specialCount = 0;
     
     for (let i = 0; i < prizesConfig.length; i++) {
         let segmentAngle;
@@ -57,7 +58,10 @@ function drawSegments(ctx, wheel, centerX, centerY, outerRadius, middleRadius, i
             centerX, centerY, middleRadius
         );
         
-        if (i % 2 === 0) {
+        // Calculate color index accounting for special segments that came before
+        const colorIndex = (i + specialCount) % 2;
+        
+        if (colorIndex === 0) {
             gradient.addColorStop(0, '#7bb0cf');
             gradient.addColorStop(1, '#345775');
         } else {
@@ -66,13 +70,15 @@ function drawSegments(ctx, wheel, centerX, centerY, outerRadius, middleRadius, i
         }
         
         if (prizesConfig[i].special) {
-            if (i % 2 === 0) {
+            if (colorIndex === 0) {
                 gradient.addColorStop(0, '#ffffcc');
                 gradient.addColorStop(1, '#916f13');
             } else {
                 gradient.addColorStop(0, '#ffffcc');
                 gradient.addColorStop(1, '#7d5f0f');
             }
+            // Increment special count to adjust future segment colors
+            specialCount++;
         }
         
         ctx.fillStyle = gradient;
@@ -110,7 +116,7 @@ function drawTextsAndIcons(ctx, wheel, centerX, centerY, outerRadius, middleRadi
             }
             
             const startAngle = currentAngle;
-            const textAngle = currentAngle + segmentAngle / 2; // Middle of segment for prize text
+            const textAngle = currentAngle + segmentAngle / 2 - 0.02;
             const textRadius = innerRadius + 10;
             const iconRadius = innerRadius + (middleRadius - innerRadius) * 0.7;
             const iconSize = 60;
@@ -118,45 +124,71 @@ function drawTextsAndIcons(ctx, wheel, centerX, centerY, outerRadius, middleRadi
             // Calculate odds percentage
             const oddsPercentage = Math.round((prizesConfig[i].weight / totalWeight) * 100);
             
+            // Calculate text size dynamically to prevent overlap
+            const segmentWidth = innerRadius * Math.sin(segmentAngle / 2) * 1.5;
+            const icon = iconsCache[prizesConfig[i].icon];
+            const iconPresent = icon && icon.complete;
+            
+            // Start with default font size and reduce if needed
+            let fontSize = 24;
+            let textWidth = 0;
+            
+            // Measure and adjust text size
             ctx.save();
-            ctx.translate(centerX, centerY);
+            do {
+                ctx.font = `${fontSize}px NavigatorHand, Arial, sans-serif`;
+                textWidth = ctx.measureText(prizesConfig[i].text).width;
+                
+                // If text would overlap icon, reduce font size
+                const availableSpace = iconPresent ? 
+                    iconRadius - textRadius - iconSize / 4 : // Space between text start and icon
+                    middleRadius - textRadius - iconSize / 4; // Space from text to middle circle
+                
+                if (textWidth < availableSpace || fontSize <= 14) {
+                    break; // Text fits or we've reached min font size
+                }
+                fontSize -= 1;
+            } while (fontSize > 14);
+            ctx.restore();
             
             // Draw the prize text in the middle of the segment
+            ctx.save();
+            ctx.translate(centerX, centerY);
             ctx.rotate(textAngle);
             ctx.fillStyle = '#ffffff';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
-            ctx.font = '22px NavigatorHand, Arial, sans-serif';
+            ctx.font = `${fontSize}px NavigatorHand, Arial, sans-serif`;
             ctx.fillText(prizesConfig[i].text, textRadius, 0);
             ctx.restore();
             
-            // Draw odds percentage at the top-left of the segment
+            // Draw odds percentage at the top-left of the segment with right alignment
             ctx.save();
             ctx.translate(centerX, centerY);
-            ctx.rotate(startAngle + 0.1); // Slightly offset from the start angle to be visible
-            
-            const oddsRadius = middleRadius - 40; // Position inside the segment
+            ctx.rotate(startAngle + 0.08);
+            const oddsRadius = middleRadius - 13;
             ctx.font = 'bold 24px NavigatorHand, Arial, sans-serif';
             ctx.fillStyle = '#ffffff';
-            ctx.textAlign = 'left';
+            // Change alignment to right instead of left
+            ctx.textAlign = 'right';
             ctx.textBaseline = 'top';
-            ctx.fillText(`${oddsPercentage}%`, oddsRadius -15, -20); // Aligned to top-left, with small vertical offset
+            // Position is now a fixed point where text ends, not starts
+            ctx.fillText(`${oddsPercentage}%`, oddsRadius, -20);
             ctx.restore();
             
             // Draw the icon
-            ctx.save();
-            ctx.translate(centerX, centerY);
-            ctx.rotate(textAngle);
-            const icon = iconsCache[prizesConfig[i].icon];
-            if (icon && icon.complete) {
+            if (iconPresent) {
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(textAngle);
                 ctx.save();
                 ctx.translate(iconRadius, 0);
                 ctx.rotate(Math.PI/2);
                 ctx.filter = 'brightness(0) invert(1)';
-                ctx.drawImage(icon, -iconSize/2, -iconSize/2-15, iconSize, iconSize);
+                ctx.drawImage(icon, -iconSize/2+5, -iconSize/2-15, iconSize, iconSize);
+                ctx.restore();
                 ctx.restore();
             }
-            ctx.restore();
             
             currentAngle += segmentAngle;
         } else {
