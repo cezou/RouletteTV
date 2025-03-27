@@ -32,7 +32,6 @@ export function initWheelUI() {
 function handleUsernameSubmit(state) {
     const usernameInput = document.getElementById('username');
     if (!usernameInput.value.trim()) {
-        alert('Please enter your name first!');
         return;
     }
     state.username = usernameInput.value;

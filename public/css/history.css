@@ -32,22 +32,22 @@ body {
     font-family: 'NavigatorHand', Arial, sans-serif;
 }
 .history-container {
-    padding: 20px;
+    padding: 0px 20px 20px 20px; /* Reduced top padding from 20px to 10px */
     max-width: 1000px;
     margin: 0 auto;
     text-align: center; /* Center the title */
 }
 .main-title {
-    font-size: 60px; /* Increased from 48px */
+    font-size: 72px; /* Increased from 60px to 72px */
     text-align: center;
-    margin: 40px auto; /* Center margin */
+    margin: 40px auto; /* Center margin x to 20px */
     background: linear-gradient(to right, var(--color-special-start), var(--color-special-middle), var(--color-special-start));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     font-family: 'NavigatorHandBold', 'NavigatorHand', Arial, sans-serif;
     font-weight: bold;
-    padding: 10px;
+    padding: 10px;/* Reduced from 10px to 5px */
     filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
     /* Remove position relative and display inline-block */
 }

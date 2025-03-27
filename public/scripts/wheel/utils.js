@@ -58,8 +58,13 @@ export function showWinPopup(prize) {
     const isSpecial = prizeConfig && prizeConfig.special;
     const popup = document.getElementById('winPopup');
     const message = document.getElementById('winMessage');
-    message.textContent = `Vous avez gagné un(e)\n${prize}!`;
+    
+    // Replace \n with <br> to create a line break in HTML
+    message.innerHTML = `Vous avez gagné un(e)<br><b>${prize}</b>!`;
+    
+    // Use 'block' instead of 'flex' to maintain original layout
     popup.style.display = 'block';
+    
     if (isSpecial) {
         playSpecialWinSound();
     } else {
