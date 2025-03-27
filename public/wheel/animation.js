@@ -13,19 +13,15 @@ export function spinWheel(wheel, ctx, username, onSpinEnd) {
     if (wheel.spinTime) {
         clearTimeout(wheel.spinTimer);
     }
-    
     playSpinSound();
-    
     const prize = weightedPrizes[Math.floor(Math.random() * weightedPrizes.length)];
     const totalWeight = prizesConfig.reduce((sum, prize) => sum + prize.weight, 0);
     const effectiveTotal = totalWeight === 0 ? prizesConfig.length : totalWeight;
-    
     let targetAngle = 0;
     let currentAngle = 0;
     
     for (let i = 0; i < prizesConfig.length; i++) {
         let segmentAngle;
-        
         if (totalWeight === 0) {
             segmentAngle = 2 * Math.PI / prizesConfig.length;
         } else if (prizesConfig[i].weight === 0) {
@@ -33,21 +29,20 @@ export function spinWheel(wheel, ctx, username, onSpinEnd) {
         } else {
             segmentAngle = (prizesConfig[i].weight / effectiveTotal) * (2 * Math.PI);
         }
-        
         if (prizesConfig[i].text === prize.text) {
             targetAngle = currentAngle + segmentAngle / 2;
             break;
         }
-        
         currentAngle += segmentAngle;
     }
-    
     const spinTimeTotal = 4000;
     const spinRevolutions = 10;
     const topPosition = 3 * Math.PI / 2;
-    const finalAngle = 2 * Math.PI * spinRevolutions + (topPosition - targetAngle);
+    const selectedSegmentAngle = targetAngle;
     
     preSpinWheel(wheel, ctx, () => {
+        const finalAngle = 2 * Math.PI * spinRevolutions + 
+                         (topPosition - selectedSegmentAngle - wheel.angle);
         animateWheel(wheel, ctx, finalAngle, spinTimeTotal, () => {
             showWinPopup(prize.text);
             saveResult(username, prize.text);
@@ -70,23 +65,18 @@ function preSpinWheel(wheel, ctx, onComplete) {
     function animatePreSpin(currentTime) {
         const elapsed = currentTime - preSpin.startTime;
         const progress = Math.min(elapsed / preSpin.duration, 1);
-        
         const easing = progress < 0.5 
             ? 2 * progress * progress 
             : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-        
         wheel.angle = preSpin.startAngle + (preSpin.targetAngle - preSpin.startAngle) * easing;
         wheel.centerImageAngle = wheel.angle;
-        
         drawWheel(ctx, wheel);
-        
         if (progress < 1) {
             requestAnimationFrame(animatePreSpin);
         } else {
             if (onComplete) onComplete();
         }
     }
-    
     requestAnimationFrame(animatePreSpin);
 }
 
@@ -100,20 +90,15 @@ function animateWheel(wheel, ctx, finalAngle, duration, onComplete) {
     function rotate(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
         const easeOut = 1 - Math.pow(1 - progress, 3);
-        
         wheel.angle = startAngle + easeOut * finalAngle;
         wheel.centerImageAngle = wheel.angle;
-        
         drawWheel(ctx, wheel);
-        
         if (progress < 1) {
             requestAnimationFrame(rotate);
         } else {
             if (onComplete) onComplete();
         }
     }
-    
     requestAnimationFrame(rotate);
 }
