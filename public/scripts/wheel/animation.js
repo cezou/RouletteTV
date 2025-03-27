@@ -17,92 +17,54 @@ export function spinWheel(wheel, ctx, username, onSpinEnd) {
     // Select the prize before spinning
     const prize = weightedPrizes[Math.floor(Math.random() * weightedPrizes.length)];
     
-    // Save result to database BEFORE spinning the wheel
-    // This ensures the result is saved regardless of animation completion
-    saveResult(username, prize.text).then(() => {
-        console.log('Result saved successfully before spinning');
-        
-        // Start the spin sound and animation
-        playSpinSound();
-        
-        const totalWeight = prizesConfig.reduce((sum, prize) => sum + prize.weight, 0);
-        const effectiveTotal = totalWeight === 0 ? prizesConfig.length : totalWeight;
-        let segmentStartAngle = 0;
-        let segmentSize = 0;
-        let currentAngle = 0;
-        
-        for (let i = 0; i < prizesConfig.length; i++) {
-            let segmentAngle;
-            if (totalWeight === 0) {
-                segmentAngle = 2 * Math.PI / prizesConfig.length;
-            } else if (prizesConfig[i].weight === 0) {
-                segmentAngle = Math.PI / 180;
-            } else {
-                segmentAngle = (prizesConfig[i].weight / effectiveTotal) * (2 * Math.PI);
-            }
-            if (prizesConfig[i].text === prize.text) {
-                segmentStartAngle = currentAngle;
-                segmentSize = segmentAngle;
-                break;
-            }
-            currentAngle += segmentAngle;
+    // Commencer la rotation sans sauvegarder le résultat
+    playSpinSound();
+    
+    const totalWeight = prizesConfig.reduce((sum, prize) => sum + prize.weight, 0);
+    const effectiveTotal = totalWeight === 0 ? prizesConfig.length : totalWeight;
+    let segmentStartAngle = 0;
+    let segmentSize = 0;
+    let currentAngle = 0;
+    
+    for (let i = 0; i < prizesConfig.length; i++) {
+        let segmentAngle;
+        if (totalWeight === 0) {
+            segmentAngle = 2 * Math.PI / prizesConfig.length;
+        } else if (prizesConfig[i].weight === 0) {
+            segmentAngle = Math.PI / 180;
+        } else {
+            segmentAngle = (prizesConfig[i].weight / effectiveTotal) * (2 * Math.PI);
         }
-        
-        const randomPosition = segmentStartAngle + (Math.random() * 0.8 + 0.1) * segmentSize;
-        const spinTimeTotal = 4000;
-        const spinRevolutions = 10;
-        const topPosition = 3 * Math.PI / 2;
-        const selectedTargetAngle = randomPosition;
-        
-        preSpinWheel(wheel, ctx, () => {
-            const finalAngle = 2 * Math.PI * spinRevolutions + 
-                             (topPosition - selectedTargetAngle - wheel.angle);
-            animateWheel(wheel, ctx, finalAngle, spinTimeTotal, () => {
-                showWinPopup(prize.text);
-                // Result already saved before spinning, no need to save again
-                if (onSpinEnd) onSpinEnd();
-            });
-        });
-    }).catch(error => {
-        console.error('Error saving result before spinning:', error);
-        // Continue with spin anyway, but log the error
-        playSpinSound();
-        const totalWeight = prizesConfig.reduce((sum, prize) => sum + prize.weight, 0);
-        const effectiveTotal = totalWeight === 0 ? prizesConfig.length : totalWeight;
-        let segmentStartAngle = 0;
-        let segmentSize = 0;
-        let currentAngle = 0;
-        
-        for (let i = 0; i < prizesConfig.length; i++) {
-            let segmentAngle;
-            if (totalWeight === 0) {
-                segmentAngle = 2 * Math.PI / prizesConfig.length;
-            } else if (prizesConfig[i].weight === 0) {
-                segmentAngle = Math.PI / 180;
-            } else {
-                segmentAngle = (prizesConfig[i].weight / effectiveTotal) * (2 * Math.PI);
-            }
-            if (prizesConfig[i].text === prize.text) {
-                segmentStartAngle = currentAngle;
-                segmentSize = segmentAngle;
-                break;
-            }
-            currentAngle += segmentAngle;
+        if (prizesConfig[i].text === prize.text) {
+            segmentStartAngle = currentAngle;
+            segmentSize = segmentAngle;
+            break;
         }
-        
-        const randomPosition = segmentStartAngle + (Math.random() * 0.8 + 0.1) * segmentSize;
-        const spinTimeTotal = 4000;
-        const spinRevolutions = 10;
-        const topPosition = 3 * Math.PI / 2;
-        const selectedTargetAngle = randomPosition;
-        
-        preSpinWheel(wheel, ctx, () => {
-            const finalAngle = 2 * Math.PI * spinRevolutions + 
-                             (topPosition - selectedTargetAngle - wheel.angle);
-            animateWheel(wheel, ctx, finalAngle, spinTimeTotal, () => {
-                showWinPopup(prize.text);
-                if (onSpinEnd) onSpinEnd();
-            });
+        currentAngle += segmentAngle;
+    }
+    
+    const randomPosition = segmentStartAngle + (Math.random() * 0.8 + 0.1) * segmentSize;
+    const spinTimeTotal = 4000;
+    const spinRevolutions = 10;
+    const topPosition = 3 * Math.PI / 2;
+    const selectedTargetAngle = randomPosition;
+    
+    preSpinWheel(wheel, ctx, () => {
+        const finalAngle = 2 * Math.PI * spinRevolutions + 
+                         (topPosition - selectedTargetAngle - wheel.angle);
+        animateWheel(wheel, ctx, finalAngle, spinTimeTotal, () => {
+            // Sauvegarder le résultat APRÈS l'animation de la roue
+            saveResult(username, prize.text)
+                .then(() => {
+                    console.log('Result saved successfully after spinning');
+                    showWinPopup(prize.text);
+                    if (onSpinEnd) onSpinEnd();
+                })
+                .catch(error => {
+                    console.error('Error saving result after spinning:', error);
+                    showWinPopup(prize.text);
+                    if (onSpinEnd) onSpinEnd();
+                });
         });
     });
 }
