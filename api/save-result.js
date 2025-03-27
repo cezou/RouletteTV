@@ -1,5 +1,13 @@
 const redis = require('./redis');
 
+// Helper function to sanitize strings
+function sanitizeInput(str) {
+    // Basic sanitization - remove script tags
+    return typeof str === 'string' 
+        ? str.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+        : str;
+}
+
 module.exports = async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
@@ -10,7 +18,11 @@ module.exports = async (req, res) => {
     }
 
     try {
-        const { username, prize } = req.body;
+        let { username, prize } = req.body;
+        
+        // Sanitize inputs before storing
+        username = sanitizeInput(username);
+        prize = sanitizeInput(prize);
         
         const entry = {
             username,

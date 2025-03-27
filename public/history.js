@@ -1,6 +1,16 @@
 // Garder en mémoire les entrées précédentes avec leurs IDs uniques
 let previousEntries = new Set();
 
+// Helper function to escape HTML and prevent XSS
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 async function fetchHistory() {
     try {
         const response = await fetch('/api/get-history');
@@ -36,9 +46,13 @@ function displayHistory(history) {
 
     winnersList.innerHTML = history.map(entry => {
         const isNew = newEntries.includes(entry);
+        // Sanitize user-generated content to prevent XSS
+        const safeUsername = escapeHtml(entry.username);
+        const safePrize = escapeHtml(entry.prize);
+        
         return `
             <div class="winner-entry ${isNew ? 'animate-slide' : ''}">
-                <strong>${entry.username}</strong> a remporté: <strong>${entry.prize}</strong>
+                <strong>${safeUsername}</strong> a remporté: <strong>${safePrize}</strong>
                 <small>${new Date(entry.timestamp).toLocaleString()}</small>
             </div>
         `;
