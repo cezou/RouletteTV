@@ -108,34 +108,33 @@ function playPrizeVideo(username, prize) {
         return;
     }
     
-    // Réinitialiser la vidéo
+    // Réinitialiser la vidéo et s'assurer qu'elle est prête
+    prizeVideo.pause();
     prizeVideo.currentTime = 0;
     
     // Définir le texte du gagnant
     document.getElementById('winnerUsername').textContent = username;
     document.getElementById('prizeName').textContent = prize;
     
-    // Afficher l'overlay et lancer la vidéo
+    // Afficher l'overlay
     videoOverlay.classList.add('active');
     
-    try {
-        // Mute first, then play, then unmute - helps with autoplay restrictions
-        prizeVideo.muted = true;
-        const playPromise = prizeVideo.play();
-        
-        if (playPromise !== undefined) {
-            playPromise.then(() => {
-                // Video started playing successfully
-                prizeVideo.muted = false;
-            }).catch(error => {
-                console.error('Failed to play video:', error);
-                // Don't close the overlay - still show the text
-            });
+    // Ajouter un court délai avant de lancer la vidéo pour éviter des problèmes de timing
+    setTimeout(() => {
+        try {
+            prizeVideo.muted = false; // S'assurer que le son est activé
+            const playPromise = prizeVideo.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.error('Failed to play video:', error);
+                    // Même en cas d'erreur, laisser l'overlay visible
+                });
+            }
+        } catch (error) {
+            console.error('Error playing video:', error);
         }
-    } catch (error) {
-        console.error('Error playing video:', error);
-        // Don't close the overlay - still show the text
-    }
+    }, 50);
 }
 
 function closeVideo() {
@@ -148,11 +147,11 @@ function closeVideo() {
  */
 function handleNewPrize(entry, isSpecial) {
     if (isSpecial) {
-        playPrizeVideo(entry.username, entry.prize);
         playSound(true);
+        playPrizeVideo(entry.username, entry.prize);
     } else {
         playSound(false);
-        
+        // Ne pas jouer la vidéo pour les prix non-spéciaux
     }
 }
 
