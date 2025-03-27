@@ -101,10 +101,7 @@ function playPrizeVideo(username, prize) {
     // Only attempt to play video if user has interacted with the page
     if (!userHasInteracted) {
         console.log('Cannot play video: waiting for user interaction');
-        // Show the text overlay with prize info anyway
-        document.getElementById('winnerUsername').textContent = username;
-        document.getElementById('prizeName').textContent = prize;
-        videoOverlay.classList.add('active');
+        // Ne pas montrer le texte si l'utilisateur n'a pas interagi
         return;
     }
     
@@ -128,11 +125,14 @@ function playPrizeVideo(username, prize) {
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
                     console.error('Failed to play video:', error);
-                    // Même en cas d'erreur, laisser l'overlay visible
+                    // Si la lecture échoue, fermer l'overlay
+                    closeVideo();
                 });
             }
         } catch (error) {
             console.error('Error playing video:', error);
+            // Si une erreur se produit, fermer l'overlay
+            closeVideo();
         }
     }, 50);
 }
@@ -149,6 +149,14 @@ function handleNewPrize(entry, isSpecial) {
     if (isSpecial) {
         playSound(true);
         playPrizeVideo(entry.username, entry.prize);
+        
+        // Ajouter un timeout pour fermer automatiquement l'overlay après quelques secondes
+        // pour les prix spéciaux au cas où la vidéo ne se jouerait pas
+        setTimeout(() => {
+            if (videoOverlay.classList.contains('active')) {
+                closeVideo();
+            }
+        }, 10000); // 10 secondes
     } else {
         playSound(false);
         // Ne pas jouer la vidéo pour les prix non-spéciaux
@@ -225,7 +233,15 @@ function displayHistory(history) {
     }).join('');
     
     winnersList.innerHTML = historyHTML;
+    
+    // Lorsque la page se charge pour la première fois, s'assurer que l'overlay est fermé
+    if (!userHasInteracted) {
+        closeVideo();
+    }
 }
+
+// Fermer l'overlay au chargement initial de la page
+closeVideo();
 
 // Fetch immediately and refresh every 5 seconds
 fetchHistory();
