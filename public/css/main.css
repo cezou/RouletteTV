@@ -10,6 +10,10 @@
     font-family: 'NavigatorHand';
     src: url('/assets/fonts/navigator-hand.ttf') format('truetype');
 }
+@font-face {
+    font-family: 'NavigatorHandBold';
+    src: url('/assets/fonts/navigator-hand-bold.ttf') format('truetype');
+}
 body {
     margin: 0;
     padding: 0;
@@ -63,6 +67,19 @@ body {
 }
 .welcome-screen {
     text-align: center;
+}
+.welcome-title {
+    font-family: 'NavigatorHandBold', 'NavigatorHand', Arial, sans-serif;
+    font-weight: bold;
+    font-size: 42px;
+    margin-bottom: 5px;
+}
+.welcome-subtitle {
+    font-size: 18px;
+    margin-top: 0;
+    opacity: 0.8;
+    font-weight: normal;
+    margin-bottom: 25px;
 }
 .name-input-container {
     display: flex;

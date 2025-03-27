@@ -82,7 +82,10 @@ function displayHistory(history) {
     // Update the previous entries set after checking for new ones
     previousEntries = currentEntries;
     
-    winnersList.innerHTML = history.map(entry => {
+    // Count special prizes to maintain color alternating pattern
+    let specialCount = 0;
+    
+    const historyHTML = history.map((entry, index) => {
         const isNew = newEntries.includes(entry);
         const isSpecial = specialPrizes.has(entry.prize);
         const safeUsername = escapeHtml(entry.username);
@@ -95,15 +98,30 @@ function displayHistory(history) {
             minute: '2-digit'
         });
         
+        // Calculate color index based on entry position and special count
+        const colorIndex = (index + specialCount) % 2;
+        
+        // Apply special color class if needed and increment special count
+        let colorClass = '';
+        
+        if (isSpecial) {
+            colorClass = ' special';
+            specialCount++;
+        } else {
+            colorClass = colorIndex === 0 ? ' color-primary' : ' color-secondary';
+        }
+        
         return `
-            <div class="winner-entry ${isNew ? 'animate-slide' : ''} ${isSpecial ? 'special' : ''}">
+            <div class="winner-entry${colorClass}${isNew ? ' animate-slide' : ''}">
                 <div class="winner-content">
-                    <span class="winner-info"><strong>${safeUsername}</strong> a remporté: <strong>${safePrize}</strong></span>
+                    <span class="winner-info"><strong>${safeUsername}</strong> <span class="prize-preposition">a remporté un(e)<br></span> <strong>${safePrize}</strong></span>
                     <span class="winner-date">${date}</span>
                 </div>
             </div>
         `;
     }).join('');
+    
+    winnersList.innerHTML = historyHTML;
 }
 
 // Fetch immediately and refresh every 5 seconds

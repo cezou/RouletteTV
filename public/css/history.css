@@ -1,3 +1,13 @@
+:root {
+    --color-background: #1a1a1a;
+    --color-primary: #345775;
+    --color-secondary: #253747;
+    --color-special-start: #916f13;
+    --color-special-middle: #ffffcc;
+    --color-text: #ffffff;
+    --shadow-opacity: 0.5;
+}
+
 @font-face {
     font-family: 'CasinoFlat';
     src: url('/assets/CasinoFlat.ttf') format('truetype');
@@ -10,11 +20,15 @@
     font-family: 'NavigatorHand';
     src: url('/assets/fonts/navigator-hand.ttf') format('truetype');
 }
+@font-face {
+    font-family: 'NavigatorHandBold';
+    src: url('/assets/fonts/navigator-hand-bold.ttf') format('truetype');
+}
 body {
     margin: 0;
     padding: 0;
-    background: #1a1a1a;
-    color: white;
+    background: var(--color-background);
+    color: var(--color-text);
     font-family: 'NavigatorHand', Arial, sans-serif;
 }
 .history-container {
@@ -23,11 +37,13 @@ body {
     margin: 0 auto;
 }
 .main-title {
-    font-size: 48px;
+    font-size: 60px; /* Increased from 48px */
     text-align: center;
     margin: 40px 0;
-    color: #ffffcc;
+    color: var(--color-special-middle);
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    font-family: 'NavigatorHandBold', 'NavigatorHand', Arial, sans-serif;
+    font-weight: bold;
 }
 #winners-list {
     display: flex;
@@ -35,45 +51,103 @@ body {
     gap: 15px;
 }
 .winner-entry {
-    background: #345775;
-    padding: 35px 40px;
+    padding: 40px 45px; /* Increased padding */
     border-radius: 12px;
-    font-size: 32px; /* Further increased font size */
+    font-size: 36px; /* Increased from 32px */
     position: relative;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-bottom: 10px; /* Reduced spacing between entries */
-    font-weight: 500; /* Increased font weight without going full bold */
+    margin-bottom: 10px;
+    font-weight: 500;
 }
-.winner-entry:nth-child(even) {
-    background: #253747;
+
+.winner-entry.color-primary {
+    background: var(--color-primary);
 }
+
+.winner-entry.color-primary .winner-info,
+.winner-entry.color-primary .winner-date {
+    text-shadow: 
+        -2px -2px 0 rgba(37, 55, 71, var(--shadow-opacity)), 
+        -1px -2px 0 rgba(37, 55, 71, var(--shadow-opacity)),
+        0px -2px 0 rgba(37, 55, 71, var(--shadow-opacity)),
+        1px -2px 0 rgba(37, 55, 71, var(--shadow-opacity)),
+        2px -2px 0 rgba(37, 55, 71, var(--shadow-opacity)),
+        -2px -1px 0 rgba(37, 55, 71, var(--shadow-opacity)),
+        2px -1px 0 rgba(37, 55, 71, var(--shadow-opacity)),
+        -2px 0px 0 rgba(37, 55, 71, var(--shadow-opacity)),
+        2px 0px 0 rgba(37, 55, 71, var(--shadow-opacity)),
+        -2px 1px 0 rgba(37, 55, 71, var(--shadow-opacity)),
+        2px 1px 0 rgba(37, 55, 71, var(--shadow-opacity)),
+        -2px 2px 0 rgba(37, 55, 71, var(--shadow-opacity)),
+        -1px 2px 0 rgba(37, 55, 71, var(--shadow-opacity)),
+        0px 2px 0 rgba(37, 55, 71, var(--shadow-opacity)),
+        1px 2px 0 rgba(37, 55, 71, var(--shadow-opacity)),
+        2px 2px 0 rgba(37, 55, 71, var(--shadow-opacity));
+    -webkit-text-stroke: unset; /* Remove the internal stroke */
+}
+
+.winner-entry.color-secondary {
+    background: var(--color-secondary);
+}
+
 .winner-entry.special {
-    background: linear-gradient(to right, #916f13, #ffffcc, #916f13);
-    color: #1a1a1a;
+    background: linear-gradient(to right, var(--color-special-start), var(--color-special-middle), var(--color-special-start));
+    color: var(--color-background);
 }
+
+.winner-entry.special .winner-info,
+.winner-entry.special .winner-date {
+    color: var(--color-text);
+    text-shadow: 
+        -2px -2px 0 rgba(26, 26, 26, var(--shadow-opacity)), 
+        -1px -2px 0 rgba(26, 26, 26, var(--shadow-opacity)),
+        0px -2px 0 rgba(26, 26, 26, var(--shadow-opacity)),
+        1px -2px 0 rgba(26, 26, 26, var(--shadow-opacity)),
+        2px -2px 0 rgba(26, 26, 26, var(--shadow-opacity)),
+        -2px -1px 0 rgba(26, 26, 26, var(--shadow-opacity)),
+        2px -1px 0 rgba(26, 26, 26, var(--shadow-opacity)),
+        -2px 0px 0 rgba(26, 26, 26, var(--shadow-opacity)),
+        2px 0px 0 rgba(26, 26, 26, var(--shadow-opacity)),
+        -2px 1px 0 rgba(26, 26, 26, var(--shadow-opacity)),
+        2px 1px 0 rgba(26, 26, 26, var(--shadow-opacity)),
+        -2px 2px 0 rgba(26, 26, 26, var(--shadow-opacity)),
+        -1px 2px 0 rgba(26, 26, 26, var(--shadow-opacity)),
+        0px 2px 0 rgba(26, 26, 26, var(--shadow-opacity)),
+        1px 2px 0 rgba(26, 26, 26, var(--shadow-opacity)),
+        2px 2px 0 rgba(26, 26, 26, var(--shadow-opacity));
+    -webkit-text-stroke: unset; /* Remove the internal stroke */
+}
+
 .winner-entry::before {
     content: '';
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 10px; /* Wider vertical bar */
-    background: #253747;
+    width: 10px;
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
 }
-.winner-entry:nth-child(even)::before {
-    background: #345775;
+
+.winner-entry.color-primary::before {
+    background: var(--color-secondary);
 }
+
+.winner-entry.color-secondary::before {
+    background: var(--color-primary);
+}
+
 .winner-entry.special::before {
-    background: #253747;
+    background: white;
+    border-right: 4px solid rgba(0, 0, 0, 0.8);
 }
+
 .winner-entry strong {
     font-weight: bold;
-    font-size: 32px; /* Larger font for names and prizes */
+    font-size: 38px; /* Increased from 32px */
 }
 .winner-entry small {
     font-size: 20px;
@@ -89,16 +163,23 @@ body {
     width: 100%;
 }
 .winner-info {
-    font-size: 32px; /* Further increased text size */
+    font-size: 36px; /* Increased from 32px */
     text-align: left;
     flex-grow: 1;
 }
+.winner-info strong {
+    font-size: 42px; /* Larger name and prize */
+}
+.winner-info .prize-preposition {
+    font-size: 28px; /* Smaller "a remporté un(e)" text */
+    opacity: 0.9;
+}
 .winner-date {
-    font-size: 26px; /* Increased date text size */
+    font-size: 30px; /* Increased from 26px */
     text-align: right;
-    margin-left: 30px;
+    margin-left: 35px;
     white-space: nowrap;
-    font-weight: 500; /* Consistent font weight */
+    font-weight: 500;
 }
 .animate-slide {
     animation: slideIn 0.5s ease-out;
@@ -109,15 +190,15 @@ body {
 }
 .error {
     background: rgba(255,0,0,0.2);
-    padding: 20px;
+    padding: 25px;
     border-radius: 8px;
     border: 1px solid #ff5555;
-    font-size: 24px;
+    font-size: 30px; /* Increased from 24px */
     text-align: center;
 }
 .no-winners {
     padding: 40px;
     text-align: center;
     opacity: 0.6;
-    font-size: 32px; /* Larger font for empty state */
+    font-size: 38px; /* Increased from 32px */
 }
