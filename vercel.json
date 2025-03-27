@@ -20,6 +20,10 @@
 		"dest": "/api/$1.js"
 	  },
 	  {
+		"src": "/history",
+		"dest": "/public/history.html"
+	  },
+	  {
 		"handle": "filesystem"
 	  },
 	  {

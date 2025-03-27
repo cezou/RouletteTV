@@ -19,34 +19,105 @@ body {
 }
 .history-container {
     padding: 20px;
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
+}
+.main-title {
+    font-size: 48px;
+    text-align: center;
+    margin: 40px 0;
+    color: #ffffcc;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 #winners-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 .winner-entry {
-    background: rgba(255,255,255,0.1);
-    padding: 15px;
-    border-radius: 5px;
+    background: #345775;
+    padding: 35px 40px;
+    border-radius: 12px;
+    font-size: 32px; /* Further increased font size */
+    position: relative;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px; /* Reduced spacing between entries */
+    font-weight: 500; /* Increased font weight without going full bold */
+}
+.winner-entry:nth-child(even) {
+    background: #253747;
+}
+.winner-entry.special {
+    background: linear-gradient(to right, #916f13, #ffffcc, #916f13);
+    color: #1a1a1a;
+}
+.winner-entry::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 10px; /* Wider vertical bar */
+    background: #253747;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+.winner-entry:nth-child(even)::before {
+    background: #345775;
+}
+.winner-entry.special::before {
+    background: #253747;
+}
+.winner-entry strong {
+    font-weight: bold;
+    font-size: 32px; /* Larger font for names and prizes */
+}
+.winner-entry small {
+    font-size: 20px;
+    opacity: 0.9;
+    margin-top: 8px;
+    text-align: right;
+    align-self: flex-end;
+}
+.winner-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.winner-info {
+    font-size: 32px; /* Further increased text size */
+    text-align: left;
+    flex-grow: 1;
+}
+.winner-date {
+    font-size: 26px; /* Increased date text size */
+    text-align: right;
+    margin-left: 30px;
+    white-space: nowrap;
+    font-weight: 500; /* Consistent font weight */
 }
 .animate-slide {
-    animation: slideIn 0.3s ease-out;
+    animation: slideIn 0.5s ease-out;
 }
 @keyframes slideIn {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(0); }
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
 }
 .error {
     background: rgba(255,0,0,0.2);
-    padding: 15px;
-    border-radius: 5px;
+    padding: 20px;
+    border-radius: 8px;
     border: 1px solid #ff5555;
+    font-size: 24px;
+    text-align: center;
 }
 .no-winners {
-    padding: 15px;
+    padding: 40px;
     text-align: center;
     opacity: 0.6;
+    font-size: 32px; /* Larger font for empty state */
 }
