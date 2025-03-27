@@ -2,17 +2,14 @@
     font-family: 'LovingCaress';
     src: url('/assets/loving-caress.regular.otf') format('opentype');
 }
-
 @font-face {
     font-family: 'CasinoFlat';
     src: url('/assets/CasinoFlat.ttf') format('truetype');
 }
-
 @font-face {
     font-family: 'NavigatorHand';
     src: url('/assets/fonts/navigator-hand.ttf') format('truetype');
 }
-
 body {
     margin: 0;
     padding: 0;
@@ -22,44 +19,38 @@ body {
     min-height: 100vh;
     background: #1a1a1a;
     color: white;
-    font-family: 'NavigatorHand', Arial, sans-serif; /* Changé de LovingCaress à NavigatorHand */
+    font-family: 'NavigatorHand', Arial, sans-serif;
     letter-spacing: 3px;
 }
-
 .container {
     text-align: center;
 }
-
 .wheel {
-    width: 800px;  /* Augmenté de 650px à 800px */
-    height: 800px; /* Augmenté de 650px à 800px */
+    width: 800px;
+    height: 800px;
     border-radius: 50%;
     border: 2px solid white;
     margin: 20px auto;
     position: relative;
     cursor: pointer;
-    display: none; /* Initially hidden */
+    display: none;
     overflow: hidden;
     transform-origin: center;
     transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
     background-color: #333;
 }
-
 .wheel.active {
     display: block;
 }
-
 .wheel.disabled {
     cursor: not-allowed;
     opacity: 0.7;
 }
-
 #username {
     padding: 10px;
     font-size: 18px;
     margin-bottom: 20px;
 }
-
 #spin {
     padding: 15px 30px;
     font-size: 20px;
@@ -68,13 +59,11 @@ body {
     border: none;
     color: white;
     border-radius: 5px;
-    display: none; /* Hide the SPIN button */
+    display: none;
 }
-
 .welcome-screen {
     text-align: center;
 }
-
 .name-input-container {
     display: flex;
     gap: 10px;
@@ -82,14 +71,12 @@ body {
     align-items: center;
     margin: 20px 0;
 }
-
 .submit-arrow {
     background: #92c0fc;
     border: none;
     color: white;
     padding-bottom: 5px;
     margin-bottom: 20px;
-
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -99,19 +86,16 @@ body {
     align-items: center;
     justify-content: center;
 }
-
 .wheel-container {
     position: relative;
-    width: 800px;  /* Augmenté de 650px à 800px */
+    width: 800px;
     margin: 20px auto;
 }
-
 .wheel-segment {
     position: absolute;
     overflow: hidden;
     transform-origin: left center;
 }
-
 .segment-content {
     position: absolute;
     transform-origin: left center;
@@ -128,10 +112,9 @@ body {
     -webkit-text-stroke: 1px black;
     text-stroke: 1px black;
 }
-
 .pointer {
     position: absolute;
-    top: -50px; /* Monté davantage, de -40px à -50px */
+    top: -50px;
     left: 50%;
     transform: translateX(-50%) rotate(180deg);
     width: 32px;
@@ -142,11 +125,9 @@ body {
     display: none;
     filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5));
 }
-
 .pointer.active {
     display: block;
 }
-
 .win-popup {
     display: none;
     position: fixed;
@@ -163,25 +144,20 @@ body {
     min-width: 400px;
     min-height: 250px;
 }
-
 @keyframes popIn {
     from { transform: translate(-50%, -50%) scale(0); }
     to { transform: translate(-50%, -50%) scale(1); }
 }
-
 .win-popup h2 {
     color: gold;
     margin: 0 0 30px 0;
     font-family: 'NavigatorHand', Arial, sans-serif;
     font-size: 32px;
 }
-
 #winMessage {
     font-size: 28px;
     line-height: 1.4;
 }
-
-/* Ajout pour s'assurer que tous les textes utilisent la police NavigatorHand */
 input, button, p, h1, h2, h3, h4, h5, h6 {
     font-family: 'NavigatorHand', Arial, sans-serif;
 }

@@ -2,43 +2,51 @@
     font-family: 'CasinoFlat';
     src: url('/assets/CasinoFlat.ttf') format('truetype');
 }
-
 @font-face {
     font-family: 'LovingCaress';
     src: url('/assets/loving-caress.regular.otf') format('opentype');
 }
-
+@font-face {
+    font-family: 'NavigatorHand';
+    src: url('/assets/fonts/navigator-hand.ttf') format('truetype');
+}
 body {
     margin: 0;
     padding: 0;
     background: #1a1a1a;
     color: white;
-    font-family: 'LovingCaress', Arial, sans-serif;
+    font-family: 'NavigatorHand', Arial, sans-serif;
 }
-
 .history-container {
     padding: 20px;
     max-width: 800px;
     margin: 0 auto;
 }
-
 #winners-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-
 .winner-entry {
     background: rgba(255,255,255,0.1);
     padding: 15px;
     border-radius: 5px;
 }
-
 .animate-slide {
     animation: slideIn 0.3s ease-out;
 }
-
 @keyframes slideIn {
     from { transform: translateX(-100%); }
     to { transform: translateX(0); }
+}
+.error {
+    background: rgba(255,0,0,0.2);
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #ff5555;
+}
+.no-winners {
+    padding: 15px;
+    text-align: center;
+    opacity: 0.6;
 }

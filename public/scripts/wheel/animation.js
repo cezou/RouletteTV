@@ -17,13 +17,10 @@ export function spinWheel(wheel, ctx, username, onSpinEnd) {
     const prize = weightedPrizes[Math.floor(Math.random() * weightedPrizes.length)];
     const totalWeight = prizesConfig.reduce((sum, prize) => sum + prize.weight, 0);
     const effectiveTotal = totalWeight === 0 ? prizesConfig.length : totalWeight;
-    
-    // Variables to track segment position
     let segmentStartAngle = 0;
     let segmentSize = 0;
     let currentAngle = 0;
     
-    // Find the segment corresponding to the chosen prize
     for (let i = 0; i < prizesConfig.length; i++) {
         let segmentAngle;
         if (totalWeight === 0) {
@@ -33,7 +30,6 @@ export function spinWheel(wheel, ctx, username, onSpinEnd) {
         } else {
             segmentAngle = (prizesConfig[i].weight / effectiveTotal) * (2 * Math.PI);
         }
-        
         if (prizesConfig[i].text === prize.text) {
             segmentStartAngle = currentAngle;
             segmentSize = segmentAngle;
@@ -42,22 +38,15 @@ export function spinWheel(wheel, ctx, username, onSpinEnd) {
         currentAngle += segmentAngle;
     }
     
-    // Randomly select a position within the segment
-    // Use a distribution that favors positions closer to the center but still allows full range
     const randomPosition = segmentStartAngle + (Math.random() * 0.8 + 0.1) * segmentSize;
-    
     const spinTimeTotal = 4000;
     const spinRevolutions = 10;
     const topPosition = 3 * Math.PI / 2;
-    
-    // Store the target angle for later use
     const selectedTargetAngle = randomPosition;
     
     preSpinWheel(wheel, ctx, () => {
-        // Calculate final angle to make the randomly chosen position end up at the top
         const finalAngle = 2 * Math.PI * spinRevolutions + 
                          (topPosition - selectedTargetAngle - wheel.angle);
-        
         animateWheel(wheel, ctx, finalAngle, spinTimeTotal, () => {
             showWinPopup(prize.text);
             saveResult(username, prize.text);

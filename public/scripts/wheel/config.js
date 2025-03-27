@@ -17,7 +17,6 @@ export const prizesConfig = (() => {
     if (basePrizes.length >= minPrizeCount) {
         return basePrizes;
     } else {
-        // If we have fewer than minimum required prizes, duplicate the list
         return [...basePrizes, ...basePrizes.map(prize => ({...prize}))];
     }
 })();

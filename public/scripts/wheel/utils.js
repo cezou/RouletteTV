@@ -56,19 +56,15 @@ export function playLooseSound() {
 export function showWinPopup(prize) {
     const prizeConfig = prizesConfig.find(p => p.text === prize);
     const isSpecial = prizeConfig && prizeConfig.special;
-    
     const popup = document.getElementById('winPopup');
     const message = document.getElementById('winMessage');
     message.textContent = `Vous avez gagné un(e)\n${prize}!`;
     popup.style.display = 'block';
-    
     if (isSpecial) {
         playSpecialWinSound();
     } else {
         playLooseSound();
     }
-    
-    // Popup remains visible permanently (removed setTimeout)
 }
 
 /**
@@ -81,11 +77,9 @@ export async function saveResult(username, prize) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, prize })
         });
-        
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
         const data = await response.json();
         console.log('Save successful:', data);
     } catch (error) {
