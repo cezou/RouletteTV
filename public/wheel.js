@@ -1,21 +1,40 @@
 const prizesConfig = [
-    { text: 'Pet de Yago en bouteille', weight: 3 },
-    { text: 'Seringue utilisée', weight: 3 },
-    { text: 'Cheveu de Yago', weight: 3 },
-    { text: 'Rhumberto Blanc', weight: 1, special: true },
-    { text: 'Un RomeroDiMery', weight: 2 },
-    { text: 'Un tank', weight: 0, special: true }
+    { text: 'Pet de Yago', weight: 3, icon: '../assets/images/petyago.svg' },
+    { text: 'Seringue utilisée', weight: 3, icon: '../assets/images/seringue.svg' },
+    { text: 'Cheveu de Yago', weight: 3, icon: '../assets/images/scissors.svg' },
+    { text: 'Rhumberto Blanc', weight: 1, special: true, icon: '../assets/images/rhum.svg' },
+    { text: 'RomeroDiMery', weight: 2, icon: '../assets/images/rhum.svg' }, // Utiliser une icône par défaut
 ];
 
 // Créer un tableau plat basé sur les poids
 const weightedPrizes = prizesConfig.flatMap(prize => 
-    Array(prize.weight).fill({ text: prize.text, special: prize.special })
+    Array(prize.weight).fill({ text: prize.text, special: prize.special, icon: prize.icon })
 );
+
+// Précharger toutes les icônes SVG
+const iconsCache = {};
+prizesConfig.forEach(prize => {
+    if (prize.icon && !iconsCache[prize.icon]) {
+        const img = new Image();
+        img.src = prize.icon;
+        iconsCache[prize.icon] = img;
+    }
+});
 
 let isSpinning = false;
 let username = '';
 let hasSpun = false;
 let canvas, ctx, wheel;
+let centerImage = new Image(); // Image du centre de la roue
+
+// Charger l'image du centre
+centerImage.src = '../assets/images/roulette-center.png';
+centerImage.onload = function() {
+    console.log('Image du centre chargée avec succès');
+};
+centerImage.onerror = function() {
+    console.error('Erreur lors du chargement de l\'image du centre');
+};
 
 // Add event listener for the arrow button
 document.querySelector('.submit-arrow').addEventListener('click', () => {
@@ -36,8 +55,8 @@ document.querySelector('.submit-arrow').addEventListener('click', () => {
     
     // Créer le canvas pour la roue
     canvas = document.createElement('canvas');
-    canvas.width = 500;
-    canvas.height = 500;
+    canvas.width = 650;  // Augmenté de 500px à 650px
+    canvas.height = 650; // Augmenté de 500px à 650px
     canvas.className = 'wheel active';
     canvas.style.cursor = 'pointer';
     wheelContainer.replaceChild(canvas, wheelElement);
@@ -51,7 +70,8 @@ document.querySelector('.submit-arrow').addEventListener('click', () => {
         angle: 0,
         spinTime: 0,
         spinTimeTotal: 0,
-        isSpinning: false
+        isSpinning: false,
+        centerImageAngle: 0 // Nouvel attribut pour la rotation de l'image centrale
     };
     
     drawWheel();
@@ -73,98 +93,237 @@ function handleWheelClick() {
 function drawWheel() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Dessiner le cercle extérieur
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2 - 2, 0, 2 * Math.PI);
-    ctx.stroke();
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const outerRadius = canvas.width / 2 - 5;
+    const innerRadius = outerRadius - 240;
+    
+    // MODIFIÉ: Augmenter la largeur du cercle extérieur pour plus de visibilité
+    const middleRadius = outerRadius - 25; // Augmenté de 11px à 25px pour plus de visibilité
     
     // Calculer la somme totale des poids pour déterminer les proportions
     const totalWeight = prizesConfig.reduce((sum, prize) => sum + prize.weight, 0);
-    
-    // Gestion spéciale si tous les poids sont à 0
     const effectiveTotal = totalWeight === 0 ? prizesConfig.length : totalWeight;
-    
-    const radius = canvas.width / 2 - 10;
-    let currentAngle = wheel.angle;
-    
-    // Dessiner les segments
+
+    // Étape 1: Dessiner les segments
+    currentAngle = wheel.angle;
     for (let i = 0; i < prizesConfig.length; i++) {
         // Calculer l'angle de ce segment basé sur son poids
-        // Si le poids est 0 et le total est 0, attribution d'une taille égale
-        // Sinon, si le poids est 0, on donne un segment minimal
         let segmentAngle;
         if (totalWeight === 0) {
-            // Si tous les poids sont à 0, on divise le cercle équitablement
             segmentAngle = 2 * Math.PI / prizesConfig.length;
         } else if (prizesConfig[i].weight === 0) {
-            // Pour les segments de poids 0, on leur donne une taille minimale
             segmentAngle = Math.PI / 180; // 1 degré en radians
         } else {
-            // Taille proportionnelle au poids
             segmentAngle = (prizesConfig[i].weight / effectiveTotal) * (2 * Math.PI);
         }
         
         const startAngle = currentAngle;
         const endAngle = startAngle + segmentAngle;
         
+        // 2. Dessiner d'abord la partie INTÉRIEURE du segment (avec dégradé)
         ctx.beginPath();
-        ctx.moveTo(canvas.width / 2, canvas.height / 2);
-        ctx.arc(canvas.width / 2, canvas.height / 2, radius, startAngle, endAngle);
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, middleRadius, startAngle, endAngle);
+        ctx.lineTo(centerX, centerY);
         ctx.closePath();
         
-        // Couleur du segment
-        if (prizesConfig[i].special) {
-            ctx.fillStyle = '#FFD700';
+        // Créer un dégradé pour la partie intérieure
+        const gradient = ctx.createRadialGradient(
+            centerX, centerY, innerRadius,
+            centerX, centerY, middleRadius
+        );
+        
+        // Utiliser les bonnes couleurs pour le dégradé
+        if (i % 2 === 0) {
+            gradient.addColorStop(0, '#7bb0cf'); // Couleur intérieure
+            gradient.addColorStop(1, '#345775'); // Couleur extérieure
         } else {
-            ctx.fillStyle = i % 2 === 0 ? '#FF0000' : '#000000';
+            gradient.addColorStop(0, '#8daac0'); // Couleur intérieure
+            gradient.addColorStop(1, '#253747'); // Couleur extérieure
         }
         
+        // Pour les segments spéciaux, ajuster le gradient
+        if (prizesConfig[i].special) {
+            if (i % 2 === 0) {
+                gradient.addColorStop(0, '#ffffcc');
+                gradient.addColorStop(1, '#916f13');
+            } else {
+                gradient.addColorStop(0, '#ffffcc');
+                gradient.addColorStop(1, '#7d5f0f');
+            }
+        }
+        
+        ctx.fillStyle = gradient;
         ctx.fill();
+        
+        // 1. Dessiner ENSUITE la partie EXTÉRIEURE du segment (couleur solide)
+        ctx.beginPath();
+        ctx.moveTo(centerX + Math.cos(startAngle) * middleRadius, centerY + Math.sin(startAngle) * middleRadius);
+        ctx.arc(centerX, centerY, middleRadius, startAngle, endAngle);
+        ctx.lineTo(centerX + Math.cos(endAngle) * outerRadius, centerY + Math.sin(endAngle) * outerRadius);
+        ctx.arc(centerX, centerY, outerRadius, endAngle, startAngle, true);
+        ctx.closePath();
+        
+        // Couleur solide pour la partie extérieure - utiliser une couleur distincte et vive
+        ctx.fillStyle = '#0A4B77'; // Bleu plus foncé et plus vibrant
+        ctx.fill();
+        
+        currentAngle = endAngle;
+    }
+    
+    
+    
+    // Étape 2: Dessiner les textes ET LES ICÔNES
+    currentAngle = wheel.angle;
+    for (let i = 0; i < prizesConfig.length; i++) {
+        if (prizesConfig[i].weight !== 0) {
+            let segmentAngle;
+            if (totalWeight === 0) {
+                segmentAngle = 2 * Math.PI / prizesConfig.length;
+            } else if (prizesConfig[i].weight === 0) {
+                segmentAngle = Math.PI / 180;
+            } else {
+                segmentAngle = (prizesConfig[i].weight / effectiveTotal) * (2 * Math.PI);
+            }
+            
+            // Calculer la position du texte
+            const textAngle = currentAngle + segmentAngle / 2;
+            
+            // Position du texte: intérieur du segment
+            const textRadius = innerRadius + 10;
+            
+            // NOUVELLE position de l'icône: proche du texte mais côté extérieur du segment
+            const iconRadius = innerRadius + (middleRadius - innerRadius) * 0.7; // 70% entre innerRadius et middleRadius
+            const iconSize = 60; // Taille ajustée
+            
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(textAngle);
+            
+            // Dessiner le texte (vers l'intérieur)
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.font = '22px NavigatorHand, Arial, sans-serif';
+            ctx.fillText(prizesConfig[i].text, textRadius, 0);
+            
+            // Dessiner l'icône (vers l'extérieur dans la même zone)
+            const icon = iconsCache[prizesConfig[i].icon];
+            if (icon && icon.complete) {
+                // Sauvegarder le contexte pour colorer et orienter l'icône
+                ctx.save();
+                
+                // Positionner au bon endroit pour l'icône
+                ctx.translate(iconRadius, 0);
+                
+                // CORRIGÉ: Rotation dans le sens horaire
+                ctx.rotate(Math.PI/2); // 90 degrés (sens horaire)
+                
+                // Dessiner l'icône en blanc, centrée sur sa nouvelle origine
+                ctx.filter = 'brightness(0) invert(1)'; // Transforme l'icône en blanc
+                ctx.drawImage(icon, -iconSize/2, -iconSize/2, iconSize, iconSize);
+                
+                ctx.restore(); // Restaurer le contexte après avoir dessiné l'icône
+            }
+            
+            ctx.restore();
+            
+            currentAngle += segmentAngle;
+        } else {
+            // Avancer l'angle même pour les segments avec poids 0
+            if (totalWeight === 0) {
+                currentAngle += 2 * Math.PI / prizesConfig.length;
+            } else {
+                currentAngle += Math.PI / 180;
+            }
+        }
+    }
+    
+    
+    // Étape 3: Dessiner les cercles extérieurs
+    // Cercle extérieur avec dégradé
+    const outerRingGradient = ctx.createRadialGradient(
+        centerX, centerY, outerRadius - 5,
+        centerX, centerY, outerRadius + 20
+    );
+    outerRingGradient.addColorStop(0, '#e3e3e4');
+    outerRingGradient.addColorStop(1, '#4c4d4d');
+    
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, outerRadius, 0, 2 * Math.PI);
+    ctx.strokeStyle = outerRingGradient;
+    ctx.lineWidth = 16;
+    ctx.stroke();
+    
+    // Dessiner l'anneau intérieur du bord (cercle noir)
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, outerRadius - 16, 0, 2 * Math.PI);
+    ctx.strokeStyle = '#151616';
+    ctx.lineWidth = 32;
+    ctx.stroke();
+    
+    // AJOUTÉ: Dessiner le cercle bleu juste à l'intérieur du cercle noir
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, outerRadius - 32, 0, 2 * Math.PI);
+    ctx.strokeStyle = '#283a4b';
+    ctx.lineWidth = 10;
+    ctx.stroke();
+    // Étape 4: Redessiner les traits séparateurs PAR-DESSUS les segments
+    currentAngle = wheel.angle;
+    for (let i = 0; i < prizesConfig.length; i++) {
+        let segmentAngle;
+        if (totalWeight === 0) {
+            segmentAngle = 2 * Math.PI / prizesConfig.length;
+        } else if (prizesConfig[i].weight === 0) {
+            segmentAngle = Math.PI / 180;
+        } else {
+            segmentAngle = (prizesConfig[i].weight / effectiveTotal) * (2 * Math.PI);
+        }
+        
+        const endAngle = currentAngle + segmentAngle;
+        
+        // MODIFIÉ: Dessiner le séparateur avec extension au-delà du cercle gris
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        // Extension légère de 5px au-delà du cercle extérieur
+        const extendedRadius = outerRadius + 5;
+        ctx.lineTo(centerX + Math.cos(endAngle) * extendedRadius, 
+                 centerY + Math.sin(endAngle) * extendedRadius);
+        ctx.strokeStyle = '#1d1f1d';
+        ctx.lineWidth = 10; // MODIFIÉ: Réduit de 12 à 10
         ctx.stroke();
         
-        // Ajouter le texte seulement si le poids n'est pas zéro
-        if (prizesConfig[i].weight !== 0) {
-            // Ajuster la position du texte en fonction de la taille du segment
-            // Plus le segment est petit, plus le texte doit être proche du centre
-            let textDistance = radius - 20;
-            
-            // Si le segment est très petit, on rapproche davantage le texte du centre
-            if (segmentAngle < Math.PI / 18) { // moins de 10 degrés
-                textDistance = radius / 2;
-            }
-            
-            // Ajouter le texte
-            ctx.save();
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.rotate(startAngle + segmentAngle / 2);
-            
-            // Texte
-            ctx.textAlign = 'right';
-            ctx.fillStyle = 'white';
-            ctx.font = '18px LovingCaress, Arial, sans-serif';
-            
-            // Ajuster la taille du texte si nécessaire
-            const maxLength = 20;
-            if (prizesConfig[i].text.length > maxLength) {
-                const scale = Math.min(1, maxLength / prizesConfig[i].text.length);
-                ctx.font = `${18 * scale}px LovingCaress, Arial, sans-serif`;
-            }
-            
-            // Adaptation supplémentaire du texte pour les petits segments
-            if (segmentAngle < Math.PI / 9) { // moins de 20 degrés
-                const shrinkFactor = Math.max(0.5, segmentAngle / (Math.PI / 9));
-                const fontSize = Math.max(10, Math.floor(18 * shrinkFactor));
-                ctx.font = ctx.font.replace(/\d+px/, `${fontSize}px`);
-            }
-            
-            ctx.fillText(prizesConfig[i].text, textDistance, 5);
-            ctx.restore();
-        }
-        
-        // Mettre à jour l'angle pour le prochain segment
         currentAngle = endAngle;
+    }
+    
+    // Étape 5: Dessiner l'image du centre EN DERNIER (AU-DESSUS de tout) avec rotation
+    if (centerImage.complete && centerImage.naturalWidth !== 0) {
+        // Calculer les dimensions pour ajuster l'image au cercle intérieur
+        const imageSize = innerRadius * 2;
+        const imageX = centerX - innerRadius;
+        const imageY = centerY - innerRadius;
+        
+        // Sauvegarder le contexte avant rotation
+        ctx.save();
+        
+        // Déplacer le point d'origine au centre de l'image
+        ctx.translate(centerX, centerY);
+        
+        // Appliquer la rotation
+        ctx.rotate(wheel.centerImageAngle);
+        
+        // Dessiner l'image au centre (avec origine déplacée)
+        ctx.drawImage(centerImage, -innerRadius, -innerRadius, imageSize, imageSize);
+        
+        // Restaurer le contexte
+        ctx.restore();
+    } else {
+        // Fallback si l'image n'est pas chargée
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, innerRadius, 0, 2 * Math.PI);
+        ctx.fillStyle = '#242424';
+        ctx.fill();
     }
 }
 
@@ -227,8 +386,11 @@ function spinWheel() {
         // Fonction d'easing pour ralentir vers la fin
         const easeOut = 1 - Math.pow(1 - progress, 3);
         
-        // Mise à jour de l'angle
+        // Mise à jour de l'angle de la roue
         wheel.angle = easeOut * finalAngle;
+        
+        // MODIFIÉ: L'image tourne exactement comme le reste de la roue
+        wheel.centerImageAngle = wheel.angle; // Même sens et même vitesse
         
         // Dessiner la roue mise à jour
         drawWheel();
