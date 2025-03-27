@@ -1,3 +1,14 @@
+import { preloadIcons } from './wheel/utils.js';
+import { initWheelUI } from './wheel/ui.js';
+
+/**
+ * @brief Main entry point for the wheel application
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    preloadIcons();
+    initWheelUI();
+});
+
 const prizesConfig = [
     { text: 'Pet de Yago', weight: 3, icon: '../assets/images/petyago.svg' },
     { text: 'Seringue utilisée', weight: 3, icon: '../assets/images/seringue.svg' },
@@ -269,6 +280,7 @@ function drawWheel() {
     ctx.strokeStyle = '#283a4b';
     ctx.lineWidth = 10;
     ctx.stroke();
+
     // Étape 4: Redessiner les traits séparateurs PAR-DESSUS les segments
     currentAngle = wheel.angle;
     for (let i = 0; i < prizesConfig.length; i++) {
@@ -419,7 +431,7 @@ function spinWheel() {
 function showWinPopup(prize) {
     const popup = document.getElementById('winPopup');
     const message = document.getElementById('winMessage');
-    message.textContent = `Vous avez gagné ${prize}!`;
+    message.textContent = `Vous avez gagné un(e) ${prize}!`;
     popup.style.display = 'block';
     
     setTimeout(() => {

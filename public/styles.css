@@ -1,16 +1,16 @@
 @font-face {
     font-family: 'LovingCaress';
-    src: url('../assets/loving-caress.regular.otf') format('opentype');
+    src: url('/assets/loving-caress.regular.otf') format('opentype');
 }
 
 @font-face {
     font-family: 'CasinoFlat';
-    src: url('../assets/CasinoFlat.ttf') format('truetype');
+    src: url('/assets/CasinoFlat.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'NavigatorHand';
-    src: url('../assets/fonts/navigator-hand.ttf') format('truetype');
+    src: url('/assets/fonts/navigator-hand.ttf') format('truetype');
 }
 
 body {
@@ -154,12 +154,14 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     background: rgba(0, 0, 0, 0.9);
-    padding: 30px;
-    border-radius: 10px;
-    border: 2px solid gold;
+    padding: 40px;
+    border-radius: 15px;
+    border: 3px solid gold;
     z-index: 1000;
     text-align: center;
     animation: popIn 0.5s ease-out;
+    min-width: 400px;
+    min-height: 250px;
 }
 
 @keyframes popIn {
@@ -169,8 +171,14 @@ body {
 
 .win-popup h2 {
     color: gold;
-    margin: 0 0 20px 0;
-    font-family: 'NavigatorHand', Arial, sans-serif; /* Ajout explicite pour les titres */
+    margin: 0 0 30px 0;
+    font-family: 'NavigatorHand', Arial, sans-serif;
+    font-size: 32px;
+}
+
+#winMessage {
+    font-size: 28px;
+    line-height: 1.4;
 }
 
 /* Ajout pour s'assurer que tous les textes utilisent la police NavigatorHand */

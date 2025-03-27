@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'CasinoFlat';
-    src: url('../assets/CasinoFlat.ttf') format('truetype');
+    src: url('/assets/CasinoFlat.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'LovingCaress';
-    src: url('../assets/loving-caress.regular.otf') format('opentype');
+    src: url('/assets/loving-caress.regular.otf') format('opentype');
 }
 
 body {

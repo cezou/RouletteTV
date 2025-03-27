@@ -8,6 +8,10 @@
 	  {
 		"src": "public/**/*",
 		"use": "@vercel/static"
+	  },
+	  {
+		"src": "assets/**/*",
+		"use": "@vercel/static"
 	  }
 	],
 	"routes": [
@@ -17,6 +21,10 @@
 	  },
 	  {
 		"handle": "filesystem"
+	  },
+	  {
+		"src": "/assets/(.*)",
+		"dest": "/assets/$1"
 	  },
 	  {
 		"src": "/(.*)",
