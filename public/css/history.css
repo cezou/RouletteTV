@@ -229,3 +229,182 @@ body {
     opacity: 0.6;
     font-size: 38px; /* Increased from 32px */
 }
+
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent; /* Fond totalement transparent */
+    z-index: 1000;
+    display: none; /* Changé de opacity: 0 à display: none */
+    pointer-events: none;
+}
+
+.video-overlay.active {
+    display: block; /* Changé de opacity: 1 à display: block */
+    pointer-events: auto;
+}
+
+.video-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.close-video {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+    z-index: 1010;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#prizeVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Pour couvrir tout l'écran */
+    mix-blend-mode: screen; /* Aide à la transparence des pixels noirs */
+}
+
+.prize-text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1005;
+    width: 90%;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+    border-top: 3px solid rgba(255, 215, 0, 0.7);
+    border-bottom: 3px solid rgba(255, 215, 0, 0.7);
+}
+
+.prize-text-overlay p {
+    font-size: 60px;
+    font-weight: bold;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    font-family: 'NavigatorHandBold', 'NavigatorHand', Arial, sans-serif;
+}
+
+.prize-name {
+    color: gold;
+    font-size: 72px;
+    display: block;
+    margin: 10px 0;
+}
+
+/* Suppression des animations qui ne sont plus nécessaires */
+.video-container.closing {
+    animation: none;
+}
+
+/* Styles pour la vidéo plein écran */
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+}
+
+.video-overlay.active {
+    display: block;
+}
+
+#prizeVideo {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mix-blend-mode: screen; /* Aide à la transparence des pixels noirs */
+}
+
+.prize-text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1001;
+    width: 90%;
+    max-width: 1200px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+    border-top: 3px solid rgba(255, 215, 0, 0.7);
+    border-bottom: 3px solid rgba(255, 215, 0, 0.7);
+}
+
+.prize-text-overlay p {
+    font-size: 60px;
+    font-weight: bold;
+    margin: 0;
+    color: white;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    font-family: 'NavigatorHandBold', 'NavigatorHand', Arial, sans-serif;
+}
+
+.prize-name {
+    color: gold;
+    font-size: 72px;
+    display: block;
+    margin: 10px 0;
+}
+
+.interaction-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.interaction-message {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    max-width: 80%;
+    border: 2px solid gold;
+}
+
+.interaction-message h2 {
+    font-size: 36px;
+    margin: 0 0 20px 0;
+    color: white;
+}
+
+.interaction-message p {
+    font-size: 24px;
+    color: #cccccc;
+}
+
+/* Hide the overlay once user has interacted */
+.interaction-overlay.hidden {
+    display: none;
+}

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TV</title>
     <link rel="icon" type="image/svg+xml" href="/assets/images/favicontv.svg">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://picsum.photos; script-src 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://picsum.photos; script-src 'self'; media-src 'self';">
     <link href="/public/css/history.css" rel="stylesheet">
 </head>
 <body>
@@ -13,7 +13,26 @@
         <h1 class="main-title">Fortuna Roulette</h1>
         <div id="winners-list"></div>
     </div>
-    <script src="/public//scripts/dev.js"></script>
-    <script src="/public//scripts/history.js"></script>
+    
+    <div class="video-overlay" id="videoOverlay">
+        <video id="prizeVideo" preload="auto">
+            <source src="/assets/videos/special-prize.webm" type="video/webm">
+            Votre navigateur ne prend pas en charge la lecture vidéo.
+        </video>
+        <div class="prize-text-overlay">
+            <p><span id="winnerUsername"></span> a remporté un(e)<br>
+            <span class="prize-name" id="prizeName"></span></p>
+        </div>
+    </div>
+    
+    <div id="interactionOverlay" class="interaction-overlay">
+        <div class="interaction-message">
+            <h2>Cliquez n'importe où sur la page</h2>
+            <p>pour activer les sons et vidéos</p>
+        </div>
+    </div>
+    
+    <script src="/public/scripts/dev.js"></script>
+    <script src="/public/scripts/history.js"></script>
 </body>
 </html>

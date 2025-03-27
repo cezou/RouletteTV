@@ -4,10 +4,34 @@
 let previousEntries = new Set();
 
 /**
+ * @brief Track if user has interacted with the page
+ */
+let userHasInteracted = false;
+
+/**
  * @brief Audio elements for sound effects
  */
-const specialSound = new Audio('/assets/sounds/special.mp3');
+const specialSound = new Audio('/assets/sounds/special_anim.mp3');
 const looseSound = new Audio('/assets/sounds/loose.mp3');
+
+// Add event listeners to detect user interaction
+document.addEventListener('click', handleUserInteraction);
+document.addEventListener('keydown', handleUserInteraction);
+document.addEventListener('touchstart', handleUserInteraction);
+
+function handleUserInteraction() {
+    userHasInteracted = true;
+    // Hide the interaction overlay
+    document.getElementById('interactionOverlay').classList.add('hidden');
+    // Remove event listeners once interaction is detected
+    document.removeEventListener('click', handleUserInteraction);
+    document.removeEventListener('keydown', handleUserInteraction);
+    document.removeEventListener('touchstart', handleUserInteraction);
+    
+    // Try to play a silent sound to fully enable audio
+    const silentSound = new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAADQgD///////////////////////////////////////////8AAAA8TEFNRTMuMTAwAQAAAAAAAAAAABSAJAJAQgAAgAAAA0JkciNSAAAAAAAAAAAAAAAAAAAA//sUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sUZCQP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sUZEoP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV');
+    silentSound.play().catch(e => console.log('Silent sound failed to play'));
+}
 
 /**
  * @brief Helper function to escape HTML and prevent XSS
@@ -25,6 +49,12 @@ function escapeHtml(unsafe) {
  * @brief Plays the appropriate sound based on prize type
  */
 function playSound(isSpecial) {
+    // Only attempt to play sounds if user has interacted with the page
+    if (!userHasInteracted) {
+        console.log('Cannot play sound: waiting for user interaction');
+        return;
+    }
+    
     try {
         if (isSpecial) {
             specialSound.currentTime = 0;
@@ -57,6 +87,76 @@ async function fetchHistory() {
 }
 
 /**
+ * @brief Gère la lecture vidéo pour les prix non-spéciaux
+ */
+const videoOverlay = document.getElementById('videoOverlay');
+const prizeVideo = document.getElementById('prizeVideo');
+
+// Fermer la vidéo quand elle est terminée
+prizeVideo.addEventListener('ended', () => {
+    closeVideo();
+});
+
+function playPrizeVideo(username, prize) {
+    // Only attempt to play video if user has interacted with the page
+    if (!userHasInteracted) {
+        console.log('Cannot play video: waiting for user interaction');
+        // Show the text overlay with prize info anyway
+        document.getElementById('winnerUsername').textContent = username;
+        document.getElementById('prizeName').textContent = prize;
+        videoOverlay.classList.add('active');
+        return;
+    }
+    
+    // Réinitialiser la vidéo
+    prizeVideo.currentTime = 0;
+    
+    // Définir le texte du gagnant
+    document.getElementById('winnerUsername').textContent = username;
+    document.getElementById('prizeName').textContent = prize;
+    
+    // Afficher l'overlay et lancer la vidéo
+    videoOverlay.classList.add('active');
+    
+    try {
+        // Mute first, then play, then unmute - helps with autoplay restrictions
+        prizeVideo.muted = true;
+        const playPromise = prizeVideo.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                // Video started playing successfully
+                prizeVideo.muted = false;
+            }).catch(error => {
+                console.error('Failed to play video:', error);
+                // Don't close the overlay - still show the text
+            });
+        }
+    } catch (error) {
+        console.error('Error playing video:', error);
+        // Don't close the overlay - still show the text
+    }
+}
+
+function closeVideo() {
+    prizeVideo.pause();
+    videoOverlay.classList.remove('active');
+}
+
+/**
+ * @brief Joue le son approprié et/ou la vidéo
+ */
+function handleNewPrize(entry, isSpecial) {
+    if (isSpecial) {
+        playPrizeVideo(entry.username, entry.prize);
+        playSound(true);
+    } else {
+        playSound(false);
+        
+    }
+}
+
+/**
  * @brief Displays history data and animates new entries
  */
 function displayHistory(history) {
@@ -76,7 +176,7 @@ function displayHistory(history) {
     if (newEntries.length > 0) {
         const newestEntry = newEntries[0];
         const isSpecial = specialPrizes.has(newestEntry.prize);
-        playSound(isSpecial);
+        handleNewPrize(newestEntry, isSpecial);
     }
     
     // Update the previous entries set after checking for new ones
