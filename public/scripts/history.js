@@ -90,10 +90,14 @@ function displayHistory(history) {
         const isSpecial = specialPrizes.has(entry.prize);
         const safeUsername = escapeHtml(entry.username);
         const safePrize = escapeHtml(entry.prize);
-        const date = new Date(entry.timestamp).toLocaleString('fr-FR', {
+        
+        // Format date without year, with different styling for date and time
+        const dateObj = new Date(entry.timestamp);
+        const dateFormatted = dateObj.toLocaleDateString('fr-FR', {
             day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
+            month: '2-digit'
+        });
+        const timeFormatted = dateObj.toLocaleTimeString('fr-FR', {
             hour: '2-digit',
             minute: '2-digit'
         });
@@ -114,8 +118,8 @@ function displayHistory(history) {
         return `
             <div class="winner-entry${colorClass}${isNew ? ' animate-slide' : ''}">
                 <div class="winner-content">
-                    <span class="winner-info"><strong>${safeUsername}</strong> <span class="prize-preposition">a remporté un(e)<br></span> <strong>${safePrize}</strong></span>
-                    <span class="winner-date">${date}</span>
+                    <span class="winner-info"><strong>${safeUsername}</strong> <span class="prize-preposition">a remporté un(e)</span> <strong>${safePrize}</strong></span>
+                    <span class="winner-date"><span class="date-part">${dateFormatted}</span> <span class="time-part">${timeFormatted}</span></span>
                 </div>
             </div>
         `;

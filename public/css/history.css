@@ -35,16 +35,33 @@ body {
     padding: 20px;
     max-width: 1000px;
     margin: 0 auto;
+    text-align: center; /* Center the title */
 }
 .main-title {
     font-size: 60px; /* Increased from 48px */
     text-align: center;
-    margin: 40px 0;
-    color: var(--color-special-middle);
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    margin: 40px auto; /* Center margin */
+    background: linear-gradient(to right, var(--color-special-start), var(--color-special-middle), var(--color-special-start));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     font-family: 'NavigatorHandBold', 'NavigatorHand', Arial, sans-serif;
     font-weight: bold;
+    padding: 10px;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
+    /* Remove position relative and display inline-block */
 }
+
+/* Remove the ::after pseudo-element with animation */
+.main-title::after {
+    display: none;
+}
+
+/* Remove the glow animation keyframes */
+@keyframes glow {
+    display: none;
+}
+
 #winners-list {
     display: flex;
     flex-direction: column;
@@ -175,12 +192,22 @@ body {
     opacity: 0.9;
 }
 .winner-date {
-    font-size: 30px; /* Increased from 26px */
+    font-size: 42px; /* Base font size for the container */
     text-align: right;
     margin-left: 35px;
     white-space: nowrap;
-    font-weight: 500;
 }
+
+.winner-date .date-part {
+    font-weight: normal;
+    font-size: 36px; /* Slightly smaller than the time part */
+}
+
+.winner-date .time-part {
+    font-weight: bold;
+    /* Inherits the 42px from the parent */
+}
+
 .animate-slide {
     animation: slideIn 0.5s ease-out;
 }
