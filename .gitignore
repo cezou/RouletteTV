@@ -1,1 +1,37 @@
+# Node modules
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Vercel
 .vercel
+
+# Video files
+*.webm
+*.mp4
+*.mov
+
+# Build artifacts
+dist/
+build/
+
+# macOS
+.DS_Store
+
+# VSCode
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Temporary files
+tmp/
+temp/
