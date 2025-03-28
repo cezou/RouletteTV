@@ -29,7 +29,7 @@ export function handleNewPrize(entry, isSpecial) {
 export function displayHistory(history, previousEntries, updatePreviousFn) {
   const winnersList = document.getElementById('winners-list');
   if (history.length === 0) {
-    winnersList.innerHTML = '<div class="no-winners">No winners yet!</div>';
+    winnersList.innerHTML = '<div class="no-winners">Lancez la roue!</div>';
     return;
   }
   const getEntryId = entry => `${entry.username}-${entry.prize}-${entry.timestamp}`;
