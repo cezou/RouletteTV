@@ -30,8 +30,8 @@ body {
     text-align: center;
 }
 .wheel {
-    width: 800px;
-    height: 800px;
+    width: 700px;
+    height: 700px;
     border-radius: 50%;
     border: 2px solid white;
     margin: 20px auto;
@@ -72,7 +72,6 @@ body {
 }
 .welcome-screen {
     text-align: center;
-    max-width: 800px;
     margin: 0 auto;
     padding: 40px;
 }
@@ -114,7 +113,7 @@ body {
 }
 .wheel-container {
     position: relative;
-    width: 800px;
+    width: 700px;
     margin: 20px auto;
 }
 .wheel-segment {
