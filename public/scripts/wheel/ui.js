@@ -1,6 +1,7 @@
 import { drawWheel } from './renderer.js';
 import { spinWheel } from './animation.js';
 import { centerImage } from './config.js';
+import { playInsertSound } from './utils.js';
 
 /**
  * @brief Initializes the wheel UI and event listeners
@@ -15,14 +16,25 @@ export function initWheelUI() {
         isSpinning: false,
         hasSpun: false
     };
-    document.querySelector('.submit-arrow').addEventListener('click', () => handleUsernameSubmit(state));
+
+    // Ajouter l'événement click avec lecture du son d'insertion
+    document.querySelector('.submit-arrow').addEventListener('click', () => {
+        // Jouer le son d'insertion au moment du clic
+        playInsertSound();
+
+        // Continuer avec la soumission du nom d'utilisateur
+        handleUsernameSubmit(state);
+    });
+
     centerImage.onload = function() {
         console.log('Image du centre chargée avec succès');
         if (state.ctx) drawWheel(state.ctx, state.wheel);
     };
+
     centerImage.onerror = function() {
         console.error('Erreur lors du chargement de l\'image du centre');
     };
+
     return state;
 }
 
