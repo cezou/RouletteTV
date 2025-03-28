@@ -238,13 +238,12 @@ body {
     height: 100%;
     z-index: 1000;
     display: none;
-    opacity: 1;
+    opacity: 1; /* Container is fully opaque */
     pointer-events: none;
 }
 
 .video-overlay.active {
     display: block;
-    opacity: 1;
     pointer-events: auto;
 }
 
@@ -280,6 +279,7 @@ body {
     height: 100%;
     object-fit: cover;
     z-index: 1000;
+    transition: opacity 1.2s ease-in-out; /* Longer fade-in than fade-out */
 }
 
 .prize-text-overlay {
@@ -296,6 +296,7 @@ body {
     box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
     border-top: 3px solid rgba(255, 215, 0, 0.7);
     border-bottom: 3px solid rgba(255, 215, 0, 0.7);
+    transition: opacity 1s ease-in-out; /* Smooth fade effect */
 }
 
 .prize-text-overlay p {
@@ -355,6 +356,7 @@ body {
     box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
     border-top: 3px solid rgba(255, 215, 0, 0.7);
     border-bottom: 3px solid rgba(255, 215, 0, 0.7);
+    transition: opacity 1s ease-in-out; /* Smooth fade effect */
 }
 
 .prize-text-overlay p {
