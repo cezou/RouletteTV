@@ -4,7 +4,7 @@ A casino prize wheel system designed for FiveM Item and TV integration, with rea
 
 ## 🎥 Demonstration
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/OoPI71_KAIg?mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+[![RouletteTV Demonstration](https://img.youtube.com/vi/OoPI71_KAIg/0.jpg)](https://www.youtube.com/watch?v=OoPI71_KAIg)
 
 ## 🎮 Integration Points
 
