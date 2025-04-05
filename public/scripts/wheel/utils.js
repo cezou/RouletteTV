@@ -4,6 +4,10 @@ import { prizesConfig, iconsCache } from './config.js';
 const spinSound = new Audio('/assets/sounds/wheel.mp3');
 const insertSound = new Audio('/assets/sounds/insert.mp3');
 
+// Set volume to 50%
+spinSound.volume = 0.4;
+insertSound.volume = 0.2;
+
 /** @brief Preloads all SVG icons used in the wheel */
 export function preloadIcons() {
   prizesConfig.forEach(prize => {
@@ -35,13 +39,13 @@ export function playInsertSound() {
 export function showWinPopup(prize) {
   const popup = document.getElementById('winPopup');
   const message = document.getElementById('winMessage');
-  
+
   // Replace \n with <br> to create a line break in HTML
   message.innerHTML = `Vous avez gagné un(e)<br><b>${prize}</b>!`;
-  
+
   // Use 'block' instead of 'flex' to maintain original layout
   popup.style.display = 'block';
-  
+
   // Suppression de la lecture des sons ici car ils sont déjà joués dans history.html
   // Pas besoin de les répéter
 }

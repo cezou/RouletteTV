@@ -42,7 +42,7 @@ const HEIGHT = 1080;
     });
     await page.goto('https://roulette-tv.vercel.app/history.html', { waitUntil: 'networkidle2' });
     console.log("Page chargée");
-    await page.mouse.click(WIDTH-1, HEIGHT-1);
+    await page.mouse.click(WIDTH - 1, HEIGHT - 1);
     await page.evaluate(() => {
       document.body.style.zoom = '1.2';
     });

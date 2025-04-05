@@ -2,6 +2,10 @@
 const specialSound = new Audio('/assets/sounds/special_anim.mp3');
 const looseSound = new Audio('/assets/sounds/loose.mp3');
 
+// Set volume to 50%
+specialSound.volume = 0.5;
+looseSound.volume = 0.5;
+
 
 /** @brief Audio playback permission state */
 let canPlayAudio = false;

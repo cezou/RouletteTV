@@ -2,18 +2,19 @@
 
 A casino prize wheel system designed for FiveM Item and TV integration, with real-time history streaming.
 
+## 🎥 Demonstration
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OoPI71_KAIg?mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 ## 🎮 Integration Points
 
-### Main Wheel ([https://roulette-tv.vercel.app/](https://roulette-tv.vercel.app/))
+### [Main Wheel](/public/index.html)
 - Designed to be integrated as a URL Item in FiveM Prop "Roulette"
 
-### History Page ([https://roulette-tv.vercel.app/history.html](https://roulette-tv.vercel.app/history.html))
+### [History Page](/public/index.html)
 - Automated streaming setup:
-  - In an Oracle Cloud Instance (It's like an AWS EC2):
-    - Page content captured via puppeteer (it's a non-headless browser)
-    - Streamed to YouTube via FFmpeg
-  - YouTube stream displayed on a FiveM TV using `/media`
-- Real-time updates every 5 seconds
+  - Using my open-source tool [PageStreamer](https://github.com/cezou/PageStreamer) to stream the history page to YouTube from a linux server
+  - YouTube stream displayed on a FiveM TV using `/media` in FiveM
 
 ## 🛠 Core Components
 

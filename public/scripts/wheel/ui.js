@@ -26,12 +26,12 @@ export function initWheelUI() {
         handleUsernameSubmit(state);
     });
 
-    centerImage.onload = function() {
+    centerImage.onload = function () {
         console.log('Image du centre chargée avec succès');
         if (state.ctx) drawWheel(state.ctx, state.wheel);
     };
 
-    centerImage.onerror = function() {
+    centerImage.onerror = function () {
         console.error('Erreur lors du chargement de l\'image du centre');
     };
 
@@ -48,19 +48,20 @@ function handleUsernameSubmit(state) {
     }
 
     const insertSound = new Audio('/assets/sounds/insert.mp3');
+    insertSound.volume = 0.5; // Set volume to 50%
     insertSound.play().catch(error => {
-      console.warn('Autoplay prevented for insert sound:', error);
-      const playOnInteraction = () => {
-        insertSound.play().catch(e => console.error('Failed to play insert sound:', e));
-        document.removeEventListener('click', playOnInteraction);
-        document.removeEventListener('keydown', playOnInteraction);
-        document.removeEventListener('touchstart', playOnInteraction);
-      };
-      document.addEventListener('click', playOnInteraction);
-      document.addEventListener('keydown', playOnInteraction);
-      document.addEventListener('touchstart', playOnInteraction);
+        console.warn('Autoplay prevented for insert sound:', error);
+        const playOnInteraction = () => {
+            insertSound.play().catch(e => console.error('Failed to play insert sound:', e));
+            document.removeEventListener('click', playOnInteraction);
+            document.removeEventListener('keydown', playOnInteraction);
+            document.removeEventListener('touchstart', playOnInteraction);
+        };
+        document.addEventListener('click', playOnInteraction);
+        document.addEventListener('keydown', playOnInteraction);
+        document.addEventListener('touchstart', playOnInteraction);
     });
-    
+
     state.username = usernameInput.value;
     document.querySelector('.welcome-screen').style.display = 'none';
     document.querySelector('.pointer').classList.add('active');
