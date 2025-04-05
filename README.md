@@ -11,10 +11,10 @@ A casino prize wheel system designed for FiveM Item and TV integration, with rea
     <table>
       <tr>
         <td align="center">
-          <img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/youtube.svg" width="16" height="16">
+          <img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/youtube.svg" width="16" height="16" style="filter: invert(1);">
         </td>
         <td>
-          <b>Watch Demo on YouTube</b> (Prize wheel with history tracking and live display)
+          <a href="https://www.youtube.com/watch?v=OoPI71_KAIg" target="_blank"><b>Watch Demo on YouTube</b></a> (Prize wheel with history tracking and live display)
         </td>
       </tr>
     </table>
