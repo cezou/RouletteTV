@@ -8,16 +8,9 @@ A casino prize wheel system designed for FiveM Item and TV integration, with rea
   <a href="https://www.youtube.com/watch?v=OoPI71_KAIg" target="_blank">
     <img src="https://img.youtube.com/vi/OoPI71_KAIg/maxresdefault.jpg" alt="RouletteTV Demonstration" width="600" style="border-radius:10px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
     <br>
-    <table>
-      <tr>
-        <td align="center">
-          <img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/youtube.svg" width="16" height="16" style="filter: invert(1);">
-        </td>
-        <td>
-          <a href="https://www.youtube.com/watch?v=OoPI71_KAIg" target="_blank"><b>Watch Demo on YouTube</b></a> (Prize wheel with history tracking and live display)
-        </td>
-      </tr>
-    </table>
+    <p align="center">
+      ▶️ <a href="https://www.youtube.com/watch?v=OoPI71_KAIg" target="_blank"><b>Watch Demo on YouTube</b></a>
+    </p>
   </a>
 </div>
 
