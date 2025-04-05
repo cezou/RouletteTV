@@ -5,11 +5,19 @@ A casino prize wheel system designed for FiveM Item and TV integration, with rea
 ## 🎥 Demonstration
 
 <div align="center">
-  <a href="https://www.youtube.com/watch?v=OoPI71_KAIg">
-    <img src="https://img.youtube.com/vi/OoPI71_KAIg/0.jpg" alt="RouletteTV Demonstration" width="600" style="border-radius:10px;">
+  <a href="https://www.youtube.com/watch?v=OoPI71_KAIg" target="_blank">
+    <img src="https://img.youtube.com/vi/OoPI71_KAIg/maxresdefault.jpg" alt="RouletteTV Demonstration" width="600" style="border-radius:10px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
     <br>
-    <img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/youtube.svg" width="20px" alt="Play Video">
-    <span>Click to watch the demo video</span>
+    <table>
+      <tr>
+        <td align="center">
+          <img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/youtube.svg" width="16" height="16">
+        </td>
+        <td>
+          <b>Watch Demo on YouTube</b> (Prize wheel with history tracking and live display)
+        </td>
+      </tr>
+    </table>
   </a>
 </div>
 
