@@ -39,12 +39,12 @@ html, body, * {
 
 .history-container {
     padding: 0px 20px 20px 20px; /* Reduced top padding from 20px to 10px */
-    max-width: 1150px;
+    max-width: 1300px;
     margin: 0 auto;
     text-align: center; /* Center the title */
 }
 .main-title {
-    font-size: 72px; /* Increased from 60px to 72px */
+    font-size: 130px; /* Increased from 60px to 72px */
     text-align: center;
     margin: 40px auto; /* Center margin x to 20px */
     background: linear-gradient(to right, var(--color-special-start), var(--color-special-middle), var(--color-special-start));
@@ -53,7 +53,6 @@ html, body, * {
     color: transparent;
     font-family: 'NavigatorHandBold', 'NavigatorHand', Arial, sans-serif;
     font-weight: bold;
-    padding: 10px;/* Reduced from 10px to 5px */
     filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
     /* Remove position relative and display inline-block */
 }
@@ -170,10 +169,10 @@ html, body, * {
 
 .winner-entry strong {
     font-weight: bold;
-    font-size: 38px; /* Increased from 32px */
+    font-size: 56px; /* Increased from 32px */
 }
 .winner-entry small {
-    font-size: 20px;
+    font-size: 56px;
     opacity: 0.9;
     margin-top: 8px;
     text-align: right;
@@ -186,15 +185,15 @@ html, body, * {
     width: 100%;
 }
 .winner-info {
-    font-size: 36px; /* Increased from 32px */
+    font-size: 50px; /* Increased from 32px */
     text-align: left;
     flex-grow: 1;
 }
 .winner-info strong {
-    font-size: 42px; /* Larger name and prize */
+    font-size: 58px; /* Larger name and prize */
 }
 .winner-info .prize-preposition {
-    font-size: 28px; /* Smaller "a remporté un(e)" text */
+    font-size: 40px; /* Smaller "a remporté un(e)" text */
     opacity: 0.9;
 }
 .winner-date {
