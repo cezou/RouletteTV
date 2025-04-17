@@ -54,12 +54,23 @@ function handleUserInteraction() {
 function refreshHistory() {
   fetchHistory((history, previousEntries, updatePreviousFn) => {
     displayHistory(history, previousEntries, updatePreviousFn);
-    
-    // Ensure overlay is closed on initial load if user hasn't interacted
     if (!userHasInteracted) {
       closeVideo();
     }
   });
+
+  // Si on est en local et que la fonction existe, on utilise aussi l'historique local permanent
+  if (
+    (window.location.port === '5500' || window.location.port === '5501') &&
+    typeof window.fetchHistoryLocal === 'function'
+  ) {
+    window.fetchHistoryLocal((history, previousEntries, updatePreviousFn) => {
+      displayHistory(history, previousEntries, updatePreviousFn);
+      if (!userHasInteracted) {
+        closeVideo();
+      }
+    });
+  }
 }
 
 

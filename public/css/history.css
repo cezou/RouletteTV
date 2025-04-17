@@ -39,7 +39,7 @@ html, body, * {
 
 .history-container {
     padding: 0px 20px 20px 20px; /* Reduced top padding from 20px to 10px */
-    max-width: 700px;
+    max-width: 1150px;
     margin: 0 auto;
     text-align: center; /* Center the title */
 }

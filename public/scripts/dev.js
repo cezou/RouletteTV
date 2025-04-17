@@ -36,6 +36,11 @@ function setupMockApi() {
     historyFetched: false,
     mockHistory: [
       {
+        username: 'Test User 1',
+        prize: 'Cheveu de Yago',
+        timestamp: Date.now() - 300000
+      },
+      {
         username: 'Test User 3',
         prize: 'Rhumberto Blanc',
         timestamp: Date.now() - 900000
@@ -90,5 +95,14 @@ function setupMockApi() {
       }
     }
     return originalFetch(url, options);
+  };
+
+  window.fetchHistoryLocal = function(callback) {
+    // Renvoie toujours le même historique simulé (permanent)
+    callback(
+      mockState.mockHistory,
+      new Set(mockState.mockHistory.map(entry => `${entry.username}-${entry.prize}-${entry.timestamp}`)),
+      () => {}
+    );
   };
 }
