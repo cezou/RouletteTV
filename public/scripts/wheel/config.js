@@ -2,11 +2,11 @@
  * @brief Prize configuration for the wheel
  */
 const basePrizes = [
-    { text: 'Pet de Yago', weight: 3, icon: '/assets/images/petyago.svg' },
-    { text: 'Seringue utilisée', weight: 3, icon: '/assets/images/seringue.svg' },
-    { text: 'Cheveu de Yago', weight: 3, icon: '/assets/images/scissors.svg' },
-    { text: 'Rhumberto Blanc', weight: 1, special: true, icon: '/assets/images/rhum.svg' },
-    { text: 'RomeroDiMery', weight: 2, icon: '/assets/images/rhum.svg' },
+    { text: 'Pet de Yago', weight: 5, icon: '/assets/images/petyago.svg' },
+    { text: 'Seringue utilisée', weight: 5, icon: '/assets/images/seringue.svg' },
+    { text: 'Cheveu de Yago', weight: 5, icon: '/assets/images/scissors.svg' },
+    { text: 'Sanchez', weight: 1, special: true, icon: '/assets/images/moto.svg' },
+    { text: 'Bon Cayo Repair', weight: 2, icon: '/assets/images/default.svg' }
 ];
 
 /**
